@@ -6,7 +6,14 @@
 
 #define PORT 8080
 #define BUFFER_SIZE 65536
+#define XOR_KEY 0x55 // Clave XOR (puede ser cualquier byte)
 
+// Function to encrypt the data using XOR
+void xorEncrypt(char *buffer, size_t size) {
+    for (size_t i = 0; i < size; i++) {
+        buffer[i] ^= XOR_KEY;
+    }
+}
 
 int main(int argc, char *argv[]) {
     int sock;
@@ -70,6 +77,12 @@ int main(int argc, char *argv[]) {
     // Read and encrypt the file
     ssize_t bytes_read;
     while ((bytes_read = fread(buffer, sizeof(char), BUFFER_SIZE, file)) > 0) {
+
+        // Encrypt the buffer
+        xorEncrypt(buffer, bytes_read);
+
+        // Saves the encrypted data to the file
+        fwrite(buffer, sizeof(char), bytes_read, file_encrypted);
 
         // Send the encrypted data to the server
         send(sock, buffer, bytes_read, 0);

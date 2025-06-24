@@ -6,6 +6,14 @@
 
 #define PORT 8080
 #define BUFFER_SIZE 65536
+#define XOR_KEY 0x55
+
+// Función para descifrar XOR (es la misma que cifrar)
+void xorDecrypt(char *buffer, size_t size) {
+    for (size_t i = 0; i < size; i++) {
+        buffer[i] ^= XOR_KEY;
+    }
+}
 
 int main(int argc, char *argv[]) {
     int server_fd, new_socket;
@@ -60,6 +68,9 @@ int main(int argc, char *argv[]) {
     // Receive the file, decrypts it, and save it
     ssize_t bytes_read;
     while ((bytes_read = read(new_socket, buffer, BUFFER_SIZE)) > 0) {
+
+        // Decrypt the buffer using XOR
+        xorDecrypt(buffer, bytes_read);
         
         fwrite(buffer, sizeof(char), bytes_read, file);
     }
