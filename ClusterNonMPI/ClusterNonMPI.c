@@ -181,55 +181,41 @@ int main(int argc, char *argv[])
 
     int wordsRegisteredInArray1 = 0;
 
-    for (const char *ptr = part1; *ptr; ptr++)
+    FILE *part1DecryptedFile = fopen("ClusterFiles/DecryptedFilePart1.txt", "rb");
+    if (part1File == NULL)
     {
-        if (isalpha((unsigned char)*ptr))
-        {
-            if (!inWord)
-                inWord = 1;
-
-            if (charIndex < sizeof(wordBuffer) - 1)
-            {
-                wordBuffer[charIndex++] = tolower((unsigned char)*ptr);
-            }
-        }
-        else
-        {
-            if (inWord)
-            {
-                wordBuffer[charIndex] = '\0';
-                // printf("%s\n", wordBuffer);
-
-                for (int i = 0; i < wordsPerPart; i++)
-                {
-                    if (strcmp(partCount1[i].word, wordBuffer) == 0)
-                    {
-                        partCount1[i].count++;
-                        break;
-                    }
-                    else
-                    {
-                        if (partCount1[i].count != 0)
-                            continue;
-                        else
-                        {
-                            strcpy(partCount1[i].word, wordBuffer);
-                            partCount1[i].count = 1;
-                            wordsRegisteredInArray1++;
-                            break;
-                        }
-                    }
-                }
-
-                charIndex = 0;
-                inWord = 0;
-            }
-        }
+        perror("Error opening part 1 file");
+        free(part1);
+        free(part2);
+        free(part3);
+        free(partCount1);
+        free(partCount2);
+        free(partCount3);
+        free(totalCount);
+        return 1;
     }
 
-    if (inWord)
+    while (fscanf(part1DecryptedFile, "%49s", wordBuffer) == 1)
     {
-        wordBuffer[charIndex] = '\0';
+        // Deletes special characters from the word
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            if (!isalpha((unsigned char)wordBuffer[i]) && wordBuffer[i] != '\'')
+            {
+                for (int j = i; wordBuffer[j]; j++)
+                {
+                    wordBuffer[j] = wordBuffer[j + 1];
+                }
+                i--;
+            }
+        }
+
+        // Convert word to lowercase
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            wordBuffer[i] = tolower((unsigned char)wordBuffer[i]);
+        }
+
         // printf("%s\n", wordBuffer);
 
         for (int i = 0; i < wordsPerPart; i++)
@@ -241,7 +227,6 @@ int main(int argc, char *argv[])
             }
             else
             {
-
                 if (partCount1[i].count != 0)
                     continue;
                 else
@@ -255,6 +240,8 @@ int main(int argc, char *argv[])
         }
     }
 
+    fclose(part1DecryptedFile);
+
     for (int i = 0; i < wordsRegisteredInArray1; i++)
     {
         // printf("%s,%d\n", partCount1[i].word, partCount1[i].count);
@@ -264,55 +251,41 @@ int main(int argc, char *argv[])
 
     int wordsRegisteredInArray2 = 0;
 
-    for (const char *ptr = part2; *ptr; ptr++)
+    FILE *part2DecryptedFile = fopen("ClusterFiles/DecryptedFilePart2.txt", "rb");
+    if (part1File == NULL)
     {
-        if (isalpha((unsigned char)*ptr))
-        {
-            if (!inWord)
-                inWord = 1;
-
-            if (charIndex < sizeof(wordBuffer) - 1)
-            {
-                wordBuffer[charIndex++] = tolower((unsigned char)*ptr);
-            }
-        }
-        else
-        {
-            if (inWord)
-            {
-                wordBuffer[charIndex] = '\0';
-                // printf("%s\n", wordBuffer);
-
-                for (int i = 0; i < wordsPerPart; i++)
-                {
-                    if (strcmp(partCount2[i].word, wordBuffer) == 0)
-                    {
-                        partCount2[i].count++;
-                        break;
-                    }
-                    else
-                    {
-                        if (partCount2[i].count != 0)
-                            continue;
-                        else
-                        {
-                            strcpy(partCount2[i].word, wordBuffer);
-                            partCount2[i].count = 1;
-                            wordsRegisteredInArray2++;
-                            break;
-                        }
-                    }
-                }
-
-                charIndex = 0;
-                inWord = 0;
-            }
-        }
+        perror("Error opening part 2 file");
+        free(part1);
+        free(part2);
+        free(part3);
+        free(partCount1);
+        free(partCount2);
+        free(partCount3);
+        free(totalCount);
+        return 1;
     }
 
-    if (inWord)
+    while (fscanf(part2DecryptedFile, "%49s", wordBuffer) == 1)
     {
-        wordBuffer[charIndex] = '\0';
+        // Deletes special characters from the word
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            if (!isalpha((unsigned char)wordBuffer[i]) && wordBuffer[i] != '\'')
+            {
+                for (int j = i; wordBuffer[j]; j++)
+                {
+                    wordBuffer[j] = wordBuffer[j + 1];
+                }
+                i--;
+            }
+        }
+
+        // Convert word to lowercase
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            wordBuffer[i] = tolower((unsigned char)wordBuffer[i]);
+        }
+
         // printf("%s\n", wordBuffer);
 
         for (int i = 0; i < wordsPerPart; i++)
@@ -324,7 +297,6 @@ int main(int argc, char *argv[])
             }
             else
             {
-
                 if (partCount2[i].count != 0)
                     continue;
                 else
@@ -338,6 +310,8 @@ int main(int argc, char *argv[])
         }
     }
 
+    fclose(part2DecryptedFile);
+
     for (int i = 0; i < wordsRegisteredInArray2; i++)
     {
         // printf("%s,%d\n", partCount2[i].word, partCount2[i].count);
@@ -347,55 +321,41 @@ int main(int argc, char *argv[])
 
     int wordsRegisteredInArray3 = 0;
 
-    for (const char *ptr = part3; *ptr; ptr++)
+    FILE *part3DecryptedFile = fopen("ClusterFiles/DecryptedFilePart3.txt", "rb");
+    if (part1File == NULL)
     {
-        if (isalpha((unsigned char)*ptr))
-        {
-            if (!inWord)
-                inWord = 1;
-
-            if (charIndex < sizeof(wordBuffer) - 1)
-            {
-                wordBuffer[charIndex++] = tolower((unsigned char)*ptr);
-            }
-        }
-        else
-        {
-            if (inWord)
-            {
-                wordBuffer[charIndex] = '\0';
-                // printf("%s\n", wordBuffer);
-
-                for (int i = 0; i < wordsPerPart; i++)
-                {
-                    if (strcmp(partCount3[i].word, wordBuffer) == 0)
-                    {
-                        partCount3[i].count++;
-                        break;
-                    }
-                    else
-                    {
-                        if (partCount3[i].count != 0)
-                            continue;
-                        else
-                        {
-                            strcpy(partCount3[i].word, wordBuffer);
-                            partCount3[i].count = 1;
-                            wordsRegisteredInArray3++;
-                            break;
-                        }
-                    }
-                }
-
-                charIndex = 0;
-                inWord = 0;
-            }
-        }
+        perror("Error opening part 3 file");
+        free(part1);
+        free(part2);
+        free(part3);
+        free(partCount1);
+        free(partCount2);
+        free(partCount3);
+        free(totalCount);
+        return 1;
     }
 
-    if (inWord)
+    while (fscanf(part3DecryptedFile, "%49s", wordBuffer) == 1)
     {
-        wordBuffer[charIndex] = '\0';
+        // Deletes special characters from the word
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            if (!isalpha((unsigned char)wordBuffer[i]) && wordBuffer[i] != '\'')
+            {
+                for (int j = i; wordBuffer[j]; j++)
+                {
+                    wordBuffer[j] = wordBuffer[j + 1];
+                }
+                i--;
+            }
+        }
+
+        // Convert word to lowercase
+        for (int i = 0; wordBuffer[i]; i++)
+        {
+            wordBuffer[i] = tolower((unsigned char)wordBuffer[i]);
+        }
+
         // printf("%s\n", wordBuffer);
 
         for (int i = 0; i < wordsPerPart; i++)
@@ -407,7 +367,6 @@ int main(int argc, char *argv[])
             }
             else
             {
-
                 if (partCount3[i].count != 0)
                     continue;
                 else
@@ -420,6 +379,8 @@ int main(int argc, char *argv[])
             }
         }
     }
+
+    fclose(part3DecryptedFile);
 
     for (int i = 0; i < wordsRegisteredInArray3; i++)
     {
@@ -437,7 +398,7 @@ int main(int argc, char *argv[])
         {
             if (strcmp(totalCount[j].word, partCount1[i].word) == 0)
             {
-                totalCount[j].count++;
+                totalCount[j].count = totalCount[j].count + partCount1[i].count;
                 break;
             }
             else
@@ -448,7 +409,7 @@ int main(int argc, char *argv[])
                 {
 
                     strcpy(totalCount[j].word, partCount1[i].word);
-                    totalCount[j].count = 1;
+                    totalCount[j].count = partCount1[i].count;
                     wordsRegisteredInTotal++;
                     break;
                 }
@@ -462,7 +423,7 @@ int main(int argc, char *argv[])
             {
                 if (strcmp(totalCount[j].word, partCount2[i].word) == 0)
                 {
-                    totalCount[j].count++;
+                    totalCount[j].count = totalCount[j].count + partCount2[i].count;
                     break;
                 }
                 else
@@ -474,7 +435,7 @@ int main(int argc, char *argv[])
                     {
 
                         strcpy(totalCount[j].word, partCount2[i].word);
-                        totalCount[j].count = 1;
+                        totalCount[j].count = partCount2[i].count;
                         wordsRegisteredInTotal++;
                         break;
                     }
@@ -489,7 +450,7 @@ int main(int argc, char *argv[])
             {
                 if (strcmp(totalCount[j].word, partCount3[i].word) == 0)
                 {
-                    totalCount[j].count++;
+                    totalCount[j].count = totalCount[j].count + partCount3[i].count;
                     break;
                 }
                 else
@@ -501,7 +462,7 @@ int main(int argc, char *argv[])
                     {
 
                         strcpy(totalCount[j].word, partCount3[i].word);
-                        totalCount[j].count = 1;
+                        totalCount[j].count = partCount3[i].count;
                         wordsRegisteredInTotal++;
                         break;
                     }
@@ -542,6 +503,47 @@ int main(int argc, char *argv[])
         for (int i = 0; i < 3; i++)
         {
             // printf("%s,%d\n", totalCount[i].word, totalCount[i].count);
+        }
+
+        // Sorts the totalCount array by count in descending order
+        for (int i = 0; i < wordsRegisteredInTotal - 1; i++)
+        {
+            for (int j = i + 1; j < wordsRegisteredInTotal; j++)
+            {
+                if (totalCount[i].count < totalCount[j].count)
+                {
+                    struct WordCount temp = totalCount[i];
+                    totalCount[i] = totalCount[j];
+                    totalCount[j] = temp;
+                }
+            }
+        }
+
+        // Prints the 10 most frequent words
+        printf("The 10 most frequent words are:\n");
+        for (int i = 0; i < 10 && i < wordsRegisteredInTotal; i++)
+        {
+            //printf("%s: %d\n", totalCount[i].word, totalCount[i].count);
+        }
+
+        // Writes the most frequent word to a file
+        FILE *mostFrequentWordFile = fopen("ClusterFiles/MostFrequentWord.txt", "wb");
+        if (mostFrequentWordFile == NULL)
+        {
+            perror("Error opening most frequent word file");
+            free(part1);
+            free(part2);
+            free(part3);
+            free(partCount1);
+            free(partCount2);
+            free(partCount3);
+            free(totalCount);
+            return 1;
+        }
+
+        if (wordsRegisteredInTotal > 0)
+        {
+            fprintf(mostFrequentWordFile, "%s,%d", totalCount[0].word, totalCount[0].count);
         }
 
         // Free allocated memory
