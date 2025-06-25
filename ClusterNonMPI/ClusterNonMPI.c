@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
     int wordsRegisteredInArray1 = 0;
 
     FILE *part1DecryptedFile = fopen("ClusterFiles/DecryptedFilePart1.txt", "rb");
-    if (part1File == NULL)
+    if (part1DecryptedFile == NULL)
     {
         perror("Error opening part 1 file");
         free(part1);
@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
     int wordsRegisteredInArray2 = 0;
 
     FILE *part2DecryptedFile = fopen("ClusterFiles/DecryptedFilePart2.txt", "rb");
-    if (part1File == NULL)
+    if (part2DecryptedFile == NULL)
     {
         perror("Error opening part 2 file");
         free(part1);
@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
     int wordsRegisteredInArray3 = 0;
 
     FILE *part3DecryptedFile = fopen("ClusterFiles/DecryptedFilePart3.txt", "rb");
-    if (part1File == NULL)
+    if (part3DecryptedFile == NULL)
     {
         perror("Error opening part 3 file");
         free(part1);

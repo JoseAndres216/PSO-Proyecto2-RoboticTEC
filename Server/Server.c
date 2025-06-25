@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
     int addrlen = sizeof(address);
     char buffer[BUFFER_SIZE];
     FILE *file;
+    FILE *clusterFile;
 
     // Create the socket
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
@@ -56,9 +57,17 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    // Open the file to save the decrypted file
+    // Open the files to save the decrypted files
     file = fopen("../Files/DecryptedFile.txt", "wb");
     if (file == NULL) {
+        perror("Error opening the file");
+        close(new_socket);
+        close(server_fd);
+        exit(EXIT_FAILURE);
+    }
+
+    clusterFile = fopen("../Cluster/ClusterFiles/DecryptedFile.txt", "wb");
+    if (clusterFile == NULL) {
         perror("Error opening the file");
         close(new_socket);
         close(server_fd);
@@ -73,12 +82,15 @@ int main(int argc, char *argv[]) {
         xorDecrypt(buffer, bytes_read);
         
         fwrite(buffer, sizeof(char), bytes_read, file);
+        fwrite(buffer, sizeof(char), bytes_read, clusterFile);
     }
 
-    printf("Decrypted file saved as 'DecryptedFIle.txt'\n");
+    printf("Decrypted file saved as 'DecryptedFile.txt'\n");
+    printf("Decrypted file saved as '../Cluster/ClusterFiles/DecryptedFile.txt'\n");
 
     // Close the file and sockets
     fclose(file);
+    fclose(clusterFile);
     close(new_socket);
     close(server_fd);
 
