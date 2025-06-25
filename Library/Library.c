@@ -1,43 +1,48 @@
 #include "Library.h"
+#include "arduino_cnc_driver.h"
+#include <stdio.h>
 #include <string.h>
-#include <ctype.h>
+#include <unistd.h>
 
-static char current_word[256];
-static int current_index = 0;
-static char most_frequent = '\0';
+char palabra[100]; // definición
 
-void init_letter_sender(const char* word) {
-    strncpy(current_word, word, sizeof(current_word) - 1);
-    current_word[sizeof(current_word) - 1] = '\0';
-    current_index = 0;
+int leer_palabra(const char* nombre_archivo) {
+    FILE* archivo = fopen(nombre_archivo, "r");
+    if (!archivo) return -1;
+    fscanf(archivo, "%99s", palabra);
+    fclose(archivo);
+    return 0;
+}
 
-    // Contar letras
-    int counts[256] = {0};
-    for (int i = 0; word[i]; i++) {
-        unsigned char c = tolower(word[i]);
-        if (isalpha(c)) {
-            counts[c]++;
-        }
+char letra_mas_repetida() {
+    int frecuencia[256] = {0};
+    for (int i = 0; palabra[i]; i++) {
+        frecuencia[(unsigned char)palabra[i]]++;
     }
 
-    // Encontrar la letra más frecuente
-    int max_count = 0;
+    char letra_max = '\0';
+    int max = 0;
     for (int i = 0; i < 256; i++) {
-        if (counts[i] > max_count) {
-            max_count = counts[i];
-            most_frequent = i;
+        if (frecuencia[i] > max) {
+            max = frecuencia[i];
+            letra_max = i;
         }
     }
+    return letra_max;
 }
 
-char next_letter() {
-    if (current_word[current_index] != '\0') {
-        return current_word[current_index++];
-    } else {
-        return '\0';  // Fin de palabra
+int enviar_palabra_a_arduino() {
+    int fd = iniciar_serial();
+    if (fd < 0) return -1;
+
+    for (int i = 0; palabra[i] != '\0'; i++) {
+        if (enviar_letra(fd, palabra[i]) < 0) {
+            cerrar_serial(fd);
+            return -2;
+        }
+        usleep(500000); // 0.5s entre letras
     }
-}
 
-char get_most_frequent_letter() {
-    return most_frequent;
+    cerrar_serial(fd);
+    return 0;
 }
